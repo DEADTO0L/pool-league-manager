@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Billiards-themed colors */
+    --background: 140 30% 96%; /* Light green background */
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 0 68% 42%; /* Red (like the 3 ball) */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 68% 42%; /* Blue (like the 2 ball) */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 140 10% 90%; /* Lighter green */
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 45 100% 50%; /* Yellow (like the 1 ball) */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 140 12% 85%; /* Light green border */
+    --input: 140 12% 85%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode billiards-themed colors */
+    --background: 140 30% 15%; /* Dark green background (like the table felt) */
+    --foreground: 210 40% 98%;
+
+    --card: 140 30% 20%; /* Slightly lighter green for cards */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 140 30% 20%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 0 68% 50%; /* Red (like the 3 ball) */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 68% 50%; /* Blue (like the 2 ball) */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 140 20% 25%; /* Darker green */
+    --muted-foreground: 210 40% 80%;
+
+    --accent: 45 100% 50%; /* Yellow (like the 1 ball) */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 140 30% 30%; /* Dark green border */
+    --input: 140 30% 30%;
+    --ring: 210 40% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Ensure all text has full opacity */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  button,
+  label,
+  th,
+  td {
+    opacity: 1 !important;
+    color: inherit !important;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* Make cards and UI elements semi-transparent but above background */
+.card {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 1;
+}
+
+.dark .card {
+  background-color: rgba(20, 40, 30, 0.7) !important;
+}
+
+/* Override for selected team card */
+.card.bg-purple-500\/30 {
+  background-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+.dark .card.bg-purple-500\/30 {
+  background-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+.alert {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 1;
+}
+
+.dark .alert {
+  background-color: rgba(20, 40, 30, 0.7) !important;
+}
+
+/* Add this to the end of the file */
+[role="alert"][data-variant="warning"] {
+  background-color: rgba(254, 252, 232, 0.7) !important;
+}
+
+.dark [role="alert"][data-variant="warning"] {
+  background-color: rgba(50, 45, 10, 0.7) !important;
+}
+
+/* Make tab list and triggers completely opaque */
+.tabs-list {
+  background-color: white !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 10;
+}
+
+.dark .tabs-list {
+  background-color: rgb(20, 40, 30) !important;
+  opacity: 1 !important;
+}
+
+/* Make tab triggers completely opaque */
+[role="tab"] {
+  background-color: white !important;
+  opacity: 1 !important;
+  color: black !important;
+  font-weight: bold !important;
+  position: relative;
+  z-index: 10;
+}
+
+.dark [role="tab"] {
+  background-color: rgb(30, 50, 40) !important;
+  color: white !important;
+}
+
+[role="tab"][data-state="active"] {
+  background-color: #f8f8f8 !important;
+  color: black !important;
+  font-weight: bold !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark [role="tab"][data-state="active"] {
+  background-color: rgb(40, 60, 50) !important;
+  color: white !important;
+}
+
+/* Specific fix for Team Editor tab */
+[role="tab"][value="editor"] {
+  background-color: white !important;
+  opacity: 1 !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+[role="tab"][value="editor"] span {
+  opacity: 1 !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.table {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.dark .table {
+  background-color: rgba(20, 40, 30, 0.7) !important;
+}
+
+.bg-muted {
+  background-color: rgba(240, 245, 240, 0.7) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.dark .bg-muted {
+  background-color: rgba(30, 50, 40, 0.7) !important;
+}
+
+/* Fix for text opacity in specific components */
+.text-muted-foreground {
+  opacity: 1 !important;
+  color: #666 !important;
+}
+
+.card-description {
+  opacity: 1 !important;
+  color: #666 !important;
+}
+
+.alert-description {
+  opacity: 1 !important;
+  color: #666 !important;
+}
+
+/* Website title specific styles */
+.website-title {
+  opacity: 1 !important;
+  color: black !important;
+  font-weight: bold !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  position: relative;
+  z-index: 1;
+}
+
+.website-subtitle {
+  opacity: 1 !important;
+  color: #333 !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure all content is above background */
+.relative {
+  position: relative;
+  z-index: 1;
+}
+
+/* Text truncation utilities */
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Fix for tab triggers on small screens */
+[role="tab"] {
+  height: auto;
+  min-height: 2.5rem;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+@media (max-width: 640px) {
+  [role="tab"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
