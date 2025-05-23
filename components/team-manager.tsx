@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { ReportErrorButton } from "@/components/report-error-button"
+import { ShareFooter } from "@/components/share-footer"
 
 // Example team data
 const exampleTeamData: Team = {
@@ -366,6 +367,9 @@ export default function TeamManager() {
 
                 {/* Report Error Button */}
                 <ReportErrorButton />
+
+                {/* Share Footer */}
+                <ShareFooter />
               </div>
             </div>
           )}
@@ -395,6 +399,9 @@ export default function TeamManager() {
 
                 {/* Report Error Button */}
                 <ReportErrorButton />
+
+                {/* Share Footer */}
+                <ShareFooter />
               </div>
             </div>
           )}
@@ -424,6 +431,9 @@ export default function TeamManager() {
 
                 {/* Report Error Button */}
                 <ReportErrorButton />
+
+                {/* Share Footer */}
+                <ShareFooter />
               </div>
             </div>
           )}
