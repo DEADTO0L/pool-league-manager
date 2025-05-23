@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    /* Billiards-themed colors */
-    --background: 140 30% 96%; /* Light green background */
+    /* Billiards-themed colors - ADJUSTED FOR BETTER VISIBILITY */
+    --background: 140 30% 88%; /* Light green background - more visible than before */
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
