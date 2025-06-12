@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trash2, Plus, Minus } from "lucide-react"
@@ -29,11 +29,82 @@ const playerColors = [
   "bg-orange-100", // Orange (muted)
 ]
 
+// Local storage key for saving scorekeeper data
+const STORAGE_KEY = "poolLeagueScorekeeper"
+
 export default function CustomGameScorekeeper() {
-  const [players, setPlayers] = useState<Player[]>([{ id: "1", name: "Player 1", score: 0, colorIndex: 0 }])
+  const [players, setPlayers] = useState<Player[]>([])
   const { toast } = useToast()
   const nextPlayerNumber = useRef(2)
-  const nextColorIndex = useRef(1) // Start with the second color for the next player
+  const nextColorIndex = useRef(1)
+  const [hasInitialized, setHasInitialized] = useState(false)
+
+  // Load saved players from localStorage on component mount
+  useEffect(() => {
+    if (hasInitialized) return // Prevent multiple initializations
+
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY)
+
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData)
+
+          if (Array.isArray(parsedData) && parsedData.length > 0) {
+            setPlayers(parsedData)
+
+            // Update the refs based on saved data
+            const maxPlayerNumber = Math.max(
+              ...parsedData.map((p) => {
+                const match = p.name.match(/Player (\d+)/)
+                return match ? Number.parseInt(match[1], 10) : 0
+              }),
+            )
+            nextPlayerNumber.current = Math.max(maxPlayerNumber + 1, 2)
+
+            // Find the highest color index and increment for next player
+            const maxColorIndex = Math.max(...parsedData.map((p) => p.colorIndex))
+            nextColorIndex.current = (maxColorIndex + 1) % playerColors.length
+          } else {
+            // Initialize with default player if no valid data
+            setPlayers([{ id: "1", name: "Player 1", score: 0, colorIndex: 0 }])
+          }
+        } catch (parseError) {
+          console.error("Failed to parse saved scorekeeper data:", parseError)
+          setPlayers([{ id: "1", name: "Player 1", score: 0, colorIndex: 0 }])
+        }
+      } else {
+        // Initialize with default player if no saved data
+        setPlayers([{ id: "1", name: "Player 1", score: 0, colorIndex: 0 }])
+      }
+    } catch (e) {
+      console.error("Error accessing localStorage:", e)
+      // Fallback to default player if localStorage is not available
+      setPlayers([{ id: "1", name: "Player 1", score: 0, colorIndex: 0 }])
+    } finally {
+      setHasInitialized(true)
+    }
+  }, [hasInitialized])
+
+  // Save players to localStorage whenever they change
+  useEffect(() => {
+    if (!hasInitialized) return // Don't save until initial load is complete
+
+    try {
+      // Create a clean copy to avoid circular references
+      const cleanPlayers = JSON.parse(JSON.stringify(players))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanPlayers))
+    } catch (e) {
+      console.error("Failed to save scorekeeper data to localStorage:", e)
+
+      // Show a toast notification if saving fails
+      toast({
+        title: "Storage Error",
+        description: "Failed to save scores. Your browser may have limited storage.",
+        variant: "destructive",
+      })
+    }
+  }, [players, toast, hasInitialized])
 
   // Handle score increment/decrement - allows negative scores
   const updateScore = (id: string, increment: number) => {
