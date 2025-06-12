@@ -158,12 +158,12 @@ export default function CustomGameScorekeeper() {
 
   // Custom button style for large, clickable buttons
   const scoreButtonStyle = {
-    width: "100px",
-    height: "100px",
+    width: "50px",
+    height: "50px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "2rem",
+    fontSize: "1rem",
   }
 
   return (
@@ -193,9 +193,9 @@ export default function CustomGameScorekeeper() {
                     variant="outline"
                     onClick={() => updateScore(player.id, -1)}
                     style={scoreButtonStyle}
-                    className="h-24 w-24 text-2xl bg-background"
+                    className="h-12 w-12 text-lg bg-background"
                   >
-                    <Minus className="h-12 w-12" />
+                    <Minus className="h-6 w-6" />
                   </Button>
                 </div>
 
@@ -228,9 +228,9 @@ export default function CustomGameScorekeeper() {
                     variant="outline"
                     onClick={() => updateScore(player.id, 1)}
                     style={scoreButtonStyle}
-                    className="h-24 w-24 text-2xl bg-background"
+                    className="h-12 w-12 text-lg bg-background"
                   >
-                    <Plus className="h-12 w-12" />
+                    <Plus className="h-6 w-6" />
                   </Button>
 
                   <Button

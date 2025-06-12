@@ -299,6 +299,10 @@ export default function TeamManager() {
       height: "100%",
       width: "100%",
       minHeight: "44px", // Ensure good tap target size on mobile
+      whiteSpace: "normal", // Allow text to wrap
+      lineHeight: "1.2", // Tighter line height for wrapped text
+      textAlign: "center", // Center text
+      fontSize: "0.9rem", // Slightly smaller font size to fit better
     }
   }
 
@@ -329,10 +333,10 @@ export default function TeamManager() {
               disabled={!currentTeam}
               style={getTabButtonStyle("combinations")}
             >
-              <span style={{ color: "black" }}>Combinations</span>
+              <span style={{ color: "black" }}>Team Combo</span>
             </button>
             <button onClick={() => setActiveTab("scorekeeper")} style={getTabButtonStyle("scorekeeper")}>
-              <span style={{ color: "black" }}>Scorekeeper</span>
+              <span style={{ color: "black" }}>Custom Score</span>
             </button>
           </div>
 
