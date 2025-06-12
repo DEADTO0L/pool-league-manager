@@ -8,7 +8,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, ArrowLeft, Download, User, RefreshCw } from "lucide-react"
 import { getSharedTeam } from "@/lib/share-utils"
 import type { Team, Player } from "@/lib/types"
-import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useToast } from "@/hooks/use-toast"
 
@@ -26,10 +25,10 @@ export default function SharedTeamPage() {
     setLoading(true)
     setError(null)
 
-    const shareId = Array.isArray(params.shareId) ? params.shareId[0] : params.shareId
+    const shareData = Array.isArray(params.shareId) ? params.shareId[0] : params.shareId
 
     try {
-      const sharedTeam = getSharedTeam(shareId)
+      const sharedTeam = getSharedTeam(shareData)
       if (sharedTeam) {
         // Ensure the team has a gameType
         setTeam({
@@ -196,20 +195,12 @@ export default function SharedTeamPage() {
             <>
               {/* Mobile view - cards */}
               <div className="md:hidden space-y-3">
-                {team.players.map((player: Player) => (
-                  <div key={player.id} className="border rounded-lg p-3 bg-card">
+                {team.players.map((player: Player, index) => (
+                  <div key={player.id || index} className="border rounded-lg p-3 bg-card">
                     <div className="font-medium mb-1">{player.name}</div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>8-Ball: {player.skillLevel8Ball || "-"}</div>
                       <div>9-Ball: {player.skillLevel9Ball || "-"}</div>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {player.absent && <Badge variant="destructive">Absent</Badge>}
-                      {player.required8Ball && <Badge variant="secondary">8-Ball Required</Badge>}
-                      {player.required9Ball && <Badge variant="secondary">9-Ball Required</Badge>}
-                      {!player.absent && !player.required8Ball && !player.required9Ball && (
-                        <Badge variant="outline">Available</Badge>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -223,25 +214,14 @@ export default function SharedTeamPage() {
                       <TableHead>Name</TableHead>
                       <TableHead>8-Ball Skill</TableHead>
                       <TableHead>9-Ball Skill</TableHead>
-                      <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {team.players.map((player: Player) => (
-                      <TableRow key={player.id}>
+                    {team.players.map((player: Player, index) => (
+                      <TableRow key={player.id || index}>
                         <TableCell className="font-medium">{player.name}</TableCell>
                         <TableCell>{player.skillLevel8Ball || "-"}</TableCell>
                         <TableCell>{player.skillLevel9Ball || "-"}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {player.absent && <Badge variant="destructive">Absent</Badge>}
-                            {player.required8Ball && <Badge variant="secondary">8-Ball Required</Badge>}
-                            {player.required9Ball && <Badge variant="secondary">9-Ball Required</Badge>}
-                            {!player.absent && !player.required8Ball && !player.required9Ball && (
-                              <Badge variant="outline">Available</Badge>
-                            )}
-                          </div>
-                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

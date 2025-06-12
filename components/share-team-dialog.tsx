@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useToast } from "@/hooks/use-toast"
-import { Share, Copy, Check, QrCode } from "lucide-react"
+import { Share, Copy, Check } from "lucide-react"
 import { shareTeam } from "@/lib/share-utils"
 import type { Team } from "@/lib/types"
 
@@ -25,21 +25,16 @@ export default function ShareTeamDialog({ team }: ShareTeamDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [shareUrl, setShareUrl] = useState("")
   const [copied, setCopied] = useState(false)
-  const [showQrCode, setShowQrCode] = useState(false)
-  const [qrCodeUrl, setQrCodeUrl] = useState("")
   const { toast } = useToast()
 
   useEffect(() => {
     if (isOpen) {
       try {
-        // Generate a share ID and create a share URL
-        const shareIdWithData = shareTeam(team)
-        const url = `${window.location.origin}/shared/${shareIdWithData}`
+        // Generate a share URL with the ultra-compact format
+        const shareData = shareTeam(team)
+        const url = `${window.location.origin}/shared/${shareData}`
         setShareUrl(url)
         setCopied(false)
-
-        // Generate QR code URL
-        setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`)
       } catch (error) {
         console.error("Error generating share URL:", error)
         toast({
@@ -141,38 +136,7 @@ export default function ShareTeamDialog({ team }: ShareTeamDialogProps) {
           </Button>
         </div>
 
-        {showQrCode && qrCodeUrl && (
-          <div className="flex justify-center py-4">
-            <div className="border p-2 rounded-md bg-white">
-              <img
-                src={qrCodeUrl || "/placeholder.svg"}
-                alt="QR Code for team share"
-                width="150"
-                height="150"
-                onError={() => {
-                  toast({
-                    title: "QR Code Error",
-                    description: "Failed to load QR code. Please use the link instead.",
-                    variant: "destructive",
-                  })
-                }}
-              />
-            </div>
-          </div>
-        )}
-
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
-          <Button
-            variant="outline"
-            onClick={(e) => {
-              e.stopPropagation()
-              setShowQrCode(!showQrCode)
-            }}
-            className="flex items-center gap-2"
-          >
-            <QrCode className="h-4 w-4" />
-            <span>{showQrCode ? "Hide QR Code" : "Show QR Code"}</span>
-          </Button>
           <Button
             variant="secondary"
             onClick={(e) => {
