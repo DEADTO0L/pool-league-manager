@@ -156,7 +156,7 @@ export default function CustomGameScorekeeper() {
     })
   }
 
-  // Custom button style for large, clickable buttons
+  // Custom button style for score buttons
   const scoreButtonStyle = {
     width: "50px",
     height: "50px",
@@ -179,75 +179,72 @@ export default function CustomGameScorekeeper() {
           </Button>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
+          <div className="space-y-3">
             {players.map((player) => (
               <div
                 key={player.id}
-                className={`flex flex-col sm:flex-row items-center justify-between p-4 border rounded-lg ${
+                className={`flex flex-row items-center justify-between p-2 border rounded-lg ${
                   playerColors[player.colorIndex]
-                } gap-4`}
+                }`}
               >
-                <div className="flex items-center justify-center">
-                  {/* Large minus button */}
-                  <Button
-                    variant="outline"
-                    onClick={() => updateScore(player.id, -1)}
-                    style={scoreButtonStyle}
-                    className="h-12 w-12 text-lg bg-background"
-                  >
-                    <Minus className="h-6 w-6" />
-                  </Button>
-                </div>
+                {/* Minus button */}
+                <Button
+                  variant="outline"
+                  onClick={() => updateScore(player.id, -1)}
+                  style={scoreButtonStyle}
+                  className="h-10 w-10 text-lg bg-background shrink-0"
+                >
+                  <Minus className="h-5 w-5" />
+                </Button>
 
-                <div className="flex-1 mx-4 text-center">
-                  <div className="flex flex-col items-center justify-center gap-3">
-                    <div
-                      contentEditable
-                      suppressContentEditableWarning
-                      className="font-medium focus:outline-none focus:bg-background/80 px-3 py-2 rounded text-center w-full max-w-[250px] text-xl text-black"
-                      style={{ color: "black" }}
-                      onBlur={(e) => updatePlayerName(player.id, e.currentTarget.textContent || player.name)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault()
-                          e.currentTarget.blur()
-                        }
-                      }}
-                    >
-                      {player.name}
-                    </div>
-                    <div className="text-4xl font-bold tabular-nums text-black" style={{ color: "black" }}>
-                      {player.score}
-                    </div>
+                {/* Player name and score */}
+                <div className="flex flex-row items-center justify-between flex-1 px-2 gap-2">
+                  <div
+                    contentEditable
+                    suppressContentEditableWarning
+                    className="font-medium focus:outline-none focus:bg-background/80 px-2 py-1 rounded text-center min-w-[80px] max-w-[120px] text-base text-black truncate"
+                    style={{ color: "black" }}
+                    onBlur={(e) => updatePlayerName(player.id, e.currentTarget.textContent || player.name)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault()
+                        e.currentTarget.blur()
+                      }
+                    }}
+                  >
+                    {player.name}
+                  </div>
+                  <div className="text-2xl font-bold tabular-nums text-black" style={{ color: "black" }}>
+                    {player.score}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  {/* Large plus button */}
+                <div className="flex items-center gap-1 shrink-0">
+                  {/* Plus button */}
                   <Button
                     variant="outline"
                     onClick={() => updateScore(player.id, 1)}
                     style={scoreButtonStyle}
-                    className="h-12 w-12 text-lg bg-background"
+                    className="h-10 w-10 text-lg bg-background"
                   >
-                    <Plus className="h-6 w-6" />
+                    <Plus className="h-5 w-5" />
                   </Button>
 
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => removePlayer(player.id)}
-                    className="text-destructive hover:text-destructive h-12 w-12 ml-2 bg-background/50"
+                    className="text-destructive hover:text-destructive h-10 w-10 bg-background/50"
                   >
-                    <Trash2 className="h-6 w-6" />
+                    <Trash2 className="h-5 w-5" />
                   </Button>
                 </div>
               </div>
             ))}
 
-            <div className="flex justify-center mt-8">
-              <Button onClick={addPlayer} className="flex items-center gap-2 px-8 py-3 text-xl">
-                <Plus className="h-6 w-6" />
+            <div className="flex justify-center mt-4">
+              <Button onClick={addPlayer} className="flex items-center gap-2 px-6 py-2">
+                <Plus className="h-5 w-5" />
                 <span>Add Player</span>
               </Button>
             </div>
