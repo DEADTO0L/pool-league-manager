@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import TeamEditor from "@/components/team-editor"
 import TeamCombinations from "@/components/team-combinations"
 import TeamList from "@/components/team-list"
+import CustomGameScorekeeper from "@/components/custom-game-scorekeeper"
 import type { Team } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
@@ -265,8 +266,10 @@ export default function TeamManager() {
       backgroundColor = "green"
     } else if (tabName === "editor") {
       backgroundColor = "blue"
-    } else {
+    } else if (tabName === "combinations") {
       backgroundColor = "red"
+    } else if (tabName === "scorekeeper") {
+      backgroundColor = "purple" // New color for scorekeeper tab
     }
 
     return {
@@ -277,10 +280,17 @@ export default function TeamManager() {
       borderRadius: "4px",
       border: activeTab === tabName ? "2px solid black" : "none",
       cursor:
-        tabName === "teams" || (currentTeam && (tabName === "editor" || tabName === "combinations"))
+        tabName === "teams" ||
+        tabName === "scorekeeper" ||
+        (currentTeam && (tabName === "editor" || tabName === "combinations"))
           ? "pointer"
           : "not-allowed",
-      opacity: tabName === "teams" || (currentTeam && (tabName === "editor" || tabName === "combinations")) ? 1 : 0.5,
+      opacity:
+        tabName === "teams" ||
+        tabName === "scorekeeper" ||
+        (currentTeam && (tabName === "editor" || tabName === "combinations"))
+          ? 1
+          : 0.5,
       zIndex: 10, // Ensure buttons are above background
       textShadow: "0px 0px 2px rgba(255, 255, 255, 0.8)", // Add text shadow for better contrast
       display: "flex",
@@ -303,7 +313,7 @@ export default function TeamManager() {
 
       <div className="flex justify-between items-center">
         <div className="w-full">
-          <div className="grid grid-cols-3 gap-1 mb-4">
+          <div className="grid grid-cols-4 gap-1 mb-4">
             <button onClick={() => setActiveTab("teams")} style={getTabButtonStyle("teams")}>
               <span style={{ color: "black" }}>Teams</span>
             </button>
@@ -320,6 +330,9 @@ export default function TeamManager() {
               style={getTabButtonStyle("combinations")}
             >
               <span style={{ color: "black" }}>Combinations</span>
+            </button>
+            <button onClick={() => setActiveTab("scorekeeper")} style={getTabButtonStyle("scorekeeper")}>
+              <span style={{ color: "black" }}>Scorekeeper</span>
             </button>
           </div>
 
@@ -428,6 +441,39 @@ export default function TeamManager() {
 
               <div className="relative" style={{ zIndex: 1 }}>
                 <TeamCombinations team={currentTeam} onUpdateTeam={updateTeam} />
+
+                {/* Report Error Button */}
+                <ReportErrorButton />
+
+                {/* Share Footer */}
+                <ShareFooter />
+              </div>
+            </div>
+          )}
+
+          {activeTab === "scorekeeper" && (
+            <div className="relative min-h-[800px]">
+              {/* Background image for Scorekeeper tab */}
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundImage:
+                    "url(https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Double%20Jeopardy-iCiciTWTgAzGKBDCyFXCDUJFcVBQdv.png)",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
+                  opacity: 0.7,
+                  zIndex: -1,
+                  pointerEvents: "none",
+                }}
+              ></div>
+
+              <div className="relative" style={{ zIndex: 1 }}>
+                <CustomGameScorekeeper />
 
                 {/* Report Error Button */}
                 <ReportErrorButton />
